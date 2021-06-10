@@ -16,4 +16,4 @@ server.on('error', error => {
   process.stdout.write(`[ERROR]: ${error.message}`);
 })
 
-server.listen(3000, 'localhost')
+server.listen(process.env.PORT || 3000, 'localhost')
