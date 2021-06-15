@@ -1,6 +1,6 @@
-# http-echo
+# tcp-echo
 
-A very simple http echo server, that just returns full http request as text.
+A very simple TCP echo server, that just returns full tcp request as http response.
 
 Opening [http-echo-node.herokuapp.com](https://http-echo-node.herokuapp.com/) in your browser will return something like this:
 ```
