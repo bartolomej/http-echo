@@ -1,9 +1,9 @@
 # tcp-echo
 
-A very simple TCP echo server, that just returns full tcp request as http response.
+A simple TCP echo server, that just returns full tcp request as http response.
 
 Opening [http-echo-node.herokuapp.com](https://http-echo-node.herokuapp.com/) in your browser will return something like this:
-```
+```http request
 GET / HTTP/1.1
 Server: Cowboy
 Date: Thu, 10 Jun 2021 13:11:51 GMT
@@ -14,19 +14,30 @@ Sec-Ch-Ua-Mobile: ?0
 Upgrade-Insecure-Requests: 1
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Sec-Fetch-Site: cross-site
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: https://dashboard.heroku.com/
-Accept-Encoding: gzip, deflate, br
-Accept-Language: sl-SI,sl;q=0.9,en-GB;q=0.8,en;q=0.7
-X-Request-Id: e82ecebf-da6e-4bc6-86f8-9f2edafa9338
-X-Forwarded-For: 89.142.186.247
-X-Forwarded-Proto: https
-X-Forwarded-Port: 443
-Via: 1.1 vegur, 1.1 vegur
-Connect-Time: 0
-X-Request-Start: 1623330706798
-Total-Route-Time: 5004
+...
+```
+
+You can also view tcp request history on `/history` endpoint:
+```http request
+GET /history HTTP/1.1
+Host: localhost:3000
+Connection: keep-alive
+Cache-Control: max-age=0
+sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"
+sec-ch-ua-mobile: ?0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+
+
+GET /favicon.ico HTTP/1.1
+Host: localhost:3000
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+sec-ch-ua: " Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"
+sec-ch-ua-mobile: ?0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+
 ```
