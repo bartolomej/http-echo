@@ -9,7 +9,11 @@ const server = net.createServer(connection => {
 
   connection.on('data', data => {
     const req = decodeHttpRequest(data);
-    const res = sendHttpResponse(connection);
+    const res = sendHttpResponse(connection, {
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
+    });
     if (!req) return;
 
     switch (req.endpoint) {
@@ -31,7 +35,6 @@ server.on('error', error => logError(error.message))
 server.listen(PORT);
 
 logInfo(`tcp-echo server started on port ${PORT}`);
-
 
 // REQUEST HANDLERS
 
@@ -70,9 +73,14 @@ function logHistory (data) {
   history.push(data);
 }
 
-function sendHttpResponse (connection) {
+function sendHttpResponse (connection, defaultOptions) {
   return function (options) {
-    connection.write(encodeHttpRequest(options))
+  const merge = key => ({...defaultOptions[key], ...options[key]});
+    const mergedOptions = {
+      headers: merge("headers"),
+      ...options
+    }
+    connection.write(encodeHttpRequest(mergedOptions))
     connection.end();
   }
 }
@@ -124,7 +132,7 @@ function decodeHttpRequest (data) {
   return { method, path, endpoint, query, protocol, headers, rawData: strData };
 }
 
-function parseKeyValue(value) {
+function parseKeyValue (value) {
   const strValue = value.trim();
   const numberValue = parseFloat(strValue);
   const isNumber = !Number.isNaN(numberValue);
@@ -137,8 +145,10 @@ function parseKeyValue(value) {
 function acceptsJson (req) {
   // may have multiple values seperated by comma
   // text/html,application/xhtml+xml,application/xml
-  console.log(req.headers["Accept"]);
-  return req.headers["Accept"].findIndex(e => equalsIgnoreCase(e, "application/json"))
+  const accept = req.headers["Accept"];
+  return accept instanceof Array
+    ? accept.findIndex(e => equalsIgnoreCase(e, "application/json"))
+    : accept === '*/*';
 }
 
 function equalsIgnoreCase (a, b) {
@@ -147,10 +157,10 @@ function equalsIgnoreCase (a, b) {
 
 // LOGGER FUNCTIONS
 
-function logInfo(message) {
+function logInfo (message) {
   process.stdout.write(`[INFO]: ${message}\n`);
 }
 
-function logError(message) {
+function logError (message) {
   process.stderr.write(`[ERROR]: ${message}\n`);
 }
