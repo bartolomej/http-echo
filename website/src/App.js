@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import useSWR from 'swr';
 
-function App() {
+
+function App () {
+  const [search, setSearch] = React.useState('');
+  const { data, error, isLoading } = useSWR(`/history?search=${search}`)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input value={search} onInput={e => setSearch(e.target.value)}/>
+      <pre>{JSON.stringify(data, null, 4)}</pre>
     </div>
-  );
+  )
 }
 
 export default App;

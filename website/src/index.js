@@ -3,10 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { SWRConfig } from "swr";
+
+
+const BASE_URL = 'https://http-echo-node.herokuapp.com';
+
+const fetcher = async (url, options) => {
+  const res = await fetch(`${BASE_URL}${url}`, options);
+  const body = await res.json();
+  if (res.status >= 400) {
+    throw new Error(body.message || 'Unknown error')
+  } else {
+    return body;
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SWRConfig value={{ fetcher }}>
+      <App/>
+    </SWRConfig>
   </React.StrictMode>,
   document.getElementById('root')
 );
